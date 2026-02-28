@@ -3,6 +3,8 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { ThemeProvider } from "@/components/ui/ThemeProvider";
+import { SplashScreen } from "@/components/ui/SplashScreen";
+import { InstallPrompt } from "@/components/ui/InstallPrompt";
 
 const arabicFont = localFont({
   src: "./fonts/GeistVF.woff",
@@ -37,12 +39,14 @@ export default function RootLayout({
   return (
     <html lang="ar" dir="rtl" suppressHydrationWarning>
       <head>
-        <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+        <link rel="apple-touch-icon" href="/icons/icon-192x192.svg" />
       </head>
       <body className={`${arabicFont.variable} antialiased`}>
         <ThemeProvider>
+          <SplashScreen />
           <main className="min-h-screen pb-20">{children}</main>
           <Navbar />
+          <InstallPrompt />
         </ThemeProvider>
       </body>
     </html>

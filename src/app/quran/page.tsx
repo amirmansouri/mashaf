@@ -8,7 +8,8 @@ import { useQuranStore } from "@/stores/quranStore";
 
 export default function QuranPage() {
   const [search, setSearch] = useState("");
-  const [viewMode, setViewMode] = useQuranStore((s) => [s.viewMode, s.setViewMode]);
+  const viewMode = useQuranStore((s) => s.viewMode);
+  const setViewMode = useQuranStore((s) => s.setViewMode);
 
   const filteredSurahs = surahNames.filter(
     (s) => s.name.includes(search) || s.englishName.toLowerCase().includes(search.toLowerCase()) || String(s.number) === search
@@ -30,7 +31,7 @@ export default function QuranPage() {
 
         {/* View Mode Tabs */}
         <div className="flex gap-2 mt-3">
-          {(["surah", "juz", "page"] as const).map((mode) => (
+          {(["surah", "juz", "hizb", "page"] as const).map((mode) => (
             <button
               key={mode}
               onClick={() => setViewMode(mode)}
@@ -40,7 +41,7 @@ export default function QuranPage() {
                   : "bg-[var(--card)] text-[var(--muted)]"
               }`}
             >
-              {mode === "surah" ? "سور" : mode === "juz" ? "أجزاء" : "صفحات"}
+              {mode === "surah" ? "سور" : mode === "juz" ? "أجزاء" : mode === "hizb" ? "أحزاب" : "صفحات"}
             </button>
           ))}
         </div>
@@ -80,6 +81,20 @@ export default function QuranPage() {
               <div className="card text-center py-4 hover:border-[var(--accent)] transition-colors">
                 <p className="text-2xl font-bold text-[var(--accent)]">{juz}</p>
                 <p className="text-[10px] text-[var(--muted)] mt-1">الجزء {juz}</p>
+              </div>
+            </Link>
+          ))}
+        </div>
+      )}
+
+      {/* Hizb List */}
+      {viewMode === "hizb" && (
+        <div className="px-4 pb-6 grid grid-cols-3 gap-2">
+          {Array.from({ length: 60 }, (_, i) => i + 1).map((hizb) => (
+            <Link key={hizb} href={`/quran/hizb/${hizb}`}>
+              <div className="card text-center py-4 hover:border-[var(--accent)] transition-colors">
+                <p className="text-2xl font-bold text-[var(--accent)]">{hizb}</p>
+                <p className="text-[10px] text-[var(--muted)] mt-1">الحزب {hizb}</p>
               </div>
             </Link>
           ))}

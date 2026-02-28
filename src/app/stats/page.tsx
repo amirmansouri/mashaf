@@ -5,9 +5,22 @@ import { Card } from "@/components/ui/Card";
 import { useStatsStore } from "@/stores/statsStore";
 
 export default function StatsPage() {
-  const { readings, currentStreak, longestStreak, totalKhatm, getWeekStats } = useStatsStore();
-  const weekStats = getWeekStats();
+  const readings = useStatsStore((s) => s.readings);
+  const currentStreak = useStatsStore((s) => s.currentStreak);
+  const longestStreak = useStatsStore((s) => s.longestStreak);
+  const totalKhatm = useStatsStore((s) => s.totalKhatm);
   const totalPages = readings.reduce((sum, r) => sum + r.pagesRead, 0);
+
+  // Compute week stats inline
+  const weekDates: string[] = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    weekDates.push(d.toISOString().split("T")[0]);
+  }
+  const weekStats = weekDates.map(
+    (date) => readings.find((r) => r.date === date) || { date, pagesRead: 0, minutesRead: 0, ayahsRead: 0 }
+  );
   const dayNames = ["أحد", "إثنين", "ثلاثاء", "أربعاء", "خميس", "جمعة", "سبت"];
 
   return (

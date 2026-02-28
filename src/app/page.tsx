@@ -16,8 +16,9 @@ import { calculatePrayerTimes, getNextPrayer, formatTime, getTimeUntil } from "@
 export default function HomePage() {
   const lastRead = useQuranStore((s) => s.lastRead);
   const tarawihPlan = useTarawihStore((s) => s.plan);
-  const stats = useStatsStore();
-  const wird = useWirdStore();
+  const totalKhatm = useStatsStore((s) => s.totalKhatm);
+  const readings = useStatsStore((s) => s.readings);
+  const wirdStreak = useWirdStore((s) => s.streak);
   const location = useSettingsStore((s) => s.location);
   const [hijri, setHijri] = useState<string>("");
   const [nextPrayer, setNextPrayer] = useState<{ name: string; time: string; countdown: string } | null>(null);
@@ -50,7 +51,8 @@ export default function HomePage() {
   if (!mounted) return null;
 
   const ramadanDay = getRamadanDay();
-  const todayStats = stats.getTodayStats();
+  const today = new Date().toISOString().split("T")[0];
+  const todayStats = readings.find((r) => r.date === today);
   const tarawihProgress = tarawihPlan
     ? Math.round((tarawihPlan.completedNights.length / tarawihPlan.totalNights) * 100)
     : 0;
@@ -127,7 +129,7 @@ export default function HomePage() {
       {/* Quick Stats */}
       <div className="grid grid-cols-3 gap-3">
         <Card className="text-center">
-          <p className="text-2xl font-bold text-[var(--accent)]">{wird.streak}</p>
+          <p className="text-2xl font-bold text-[var(--accent)]">{wirdStreak}</p>
           <p className="text-[10px] text-[var(--muted)] mt-1">أيام متتالية</p>
         </Card>
         <Card className="text-center">
@@ -135,7 +137,7 @@ export default function HomePage() {
           <p className="text-[10px] text-[var(--muted)] mt-1">صفحات اليوم</p>
         </Card>
         <Card className="text-center">
-          <p className="text-2xl font-bold text-[var(--accent)]">{stats.totalKhatm}</p>
+          <p className="text-2xl font-bold text-[var(--accent)]">{totalKhatm}</p>
           <p className="text-[10px] text-[var(--muted)] mt-1">ختمات</p>
         </Card>
       </div>

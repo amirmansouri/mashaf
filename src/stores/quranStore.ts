@@ -3,9 +3,9 @@ import { persist } from "zustand/middleware";
 
 interface QuranState {
   lastRead: { surah: number; ayah: number } | null;
-  viewMode: "surah" | "juz" | "page";
+  viewMode: "surah" | "juz" | "hizb" | "page";
   setLastRead: (surah: number, ayah: number) => void;
-  setViewMode: (mode: "surah" | "juz" | "page") => void;
+  setViewMode: (mode: "surah" | "juz" | "hizb" | "page") => void;
 }
 
 export const useQuranStore = create<QuranState>()(

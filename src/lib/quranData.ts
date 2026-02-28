@@ -47,6 +47,65 @@ export async function getJuzAyahs(juz: number): Promise<{ surah: Surah; ayahs: A
   return result;
 }
 
+export async function getHizbAyahs(hizb: number): Promise<{ surah: Surah; ayahs: Ayah[] }[]> {
+  const data = await loadQuranData();
+  const result: { surah: Surah; ayahs: Ayah[] }[] = [];
+  for (const surah of data.surahs) {
+    const hizbAyahs = surah.ayahs.filter((a) => Math.ceil(a.hizbQuarter / 2) === hizb);
+    if (hizbAyahs.length > 0) {
+      result.push({ surah, ayahs: hizbAyahs });
+    }
+  }
+  return result;
+}
+
+export interface HizbPosition {
+  hizb: number;
+  surahName: string;
+  surahNumber: number;
+  ayah: number;
+  page: number;
+  juz: number;
+}
+
+export async function getHizbStartPosition(totalHizbRead: number): Promise<HizbPosition | null> {
+  if (totalHizbRead < 0) return null;
+  if (totalHizbRead >= 60) {
+    // Completed the entire Quran
+    return { hizb: 60, surahName: "الناس", surahNumber: 114, ayah: 1, page: 604, juz: 30 };
+  }
+
+  const targetHizb = Math.floor(totalHizbRead) + 1;
+  const fractionIntoHizb = totalHizbRead - Math.floor(totalHizbRead);
+
+  const sections = await getHizbAyahs(targetHizb);
+  if (sections.length === 0) return null;
+
+  // Flatten all ayahs in this hizb
+  const allAyahs: { surahName: string; surahNumber: number; ayah: Ayah }[] = [];
+  for (const section of sections) {
+    for (const ayah of section.ayahs) {
+      allAyahs.push({ surahName: section.surah.name, surahNumber: section.surah.number, ayah });
+    }
+  }
+
+  // Find the target ayah based on fraction offset
+  const targetIndex = Math.min(
+    Math.floor(fractionIntoHizb * allAyahs.length),
+    allAyahs.length - 1
+  );
+  const target = allAyahs[targetIndex];
+
+  return {
+    hizb: targetHizb,
+    surahName: target.surahName,
+    surahNumber: target.surahNumber,
+    ayah: target.ayah.numberInSurah,
+    page: target.ayah.page,
+    juz: target.ayah.juz,
+  };
+}
+
 export async function searchQuran(query: string): Promise<{ surah: Surah; ayah: Ayah }[]> {
   const data = await loadQuranData();
   const results: { surah: Surah; ayah: Ayah }[] = [];

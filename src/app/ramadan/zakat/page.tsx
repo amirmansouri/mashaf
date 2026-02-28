@@ -49,7 +49,7 @@ export default function ZakatPage() {
         <Card className="text-center">
           <p className="text-sm text-[var(--muted)]">النصاب الحالي (تقريبي)</p>
           <p className="text-xl font-bold mt-1">${NISAB_GOLD.toLocaleString()}</p>
-          <p className="text-[10px] text-[var(--muted)]">٨٥ غرام ذهب</p>
+          <p className="text-[10px] text-[var(--muted)]">85 غرام ذهب</p>
         </Card>
 
         {fields.map((field, i) => (
@@ -75,7 +75,7 @@ export default function ZakatPage() {
               <>
                 <p className="text-sm opacity-80">مبلغ الزكاة المستحق</p>
                 <p className="text-3xl font-bold mt-2">${result.toFixed(2)}</p>
-                <p className="text-sm mt-2 opacity-80">٢.٥٪ من إجمالي الأموال الزكوية</p>
+                <p className="text-sm mt-2 opacity-80">2.5٪ من إجمالي الأموال الزكوية</p>
               </>
             ) : (
               <>

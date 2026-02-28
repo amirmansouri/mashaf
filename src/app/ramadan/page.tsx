@@ -86,6 +86,21 @@ export default function RamadanPage() {
         )}
 
         {/* Links */}
+        <Link href="/ramadan/hizb-calculator">
+          <Card className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <span className="text-xl">📖</span>
+              <div>
+                <p className="font-bold">حاسبة موضع الحزب</p>
+                <p className="text-xs text-[var(--muted)]">اعرف وين وصلت بالقراءة</p>
+              </div>
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-5 h-5 text-[var(--muted)]">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+            </svg>
+          </Card>
+        </Link>
+
         <Link href="/ramadan/zakat">
           <Card className="flex items-center justify-between">
             <div className="flex items-center gap-3">

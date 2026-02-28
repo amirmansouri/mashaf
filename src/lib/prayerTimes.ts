@@ -64,7 +64,7 @@ export function getNextPrayer(times: PrayerTimeResult): { name: string; time: Da
 }
 
 export function formatTime(date: Date): string {
-  return date.toLocaleTimeString("ar-SA", {
+  return date.toLocaleTimeString("ar-SA-u-nu-latn", {
     hour: "2-digit",
     minute: "2-digit",
     hour12: true,

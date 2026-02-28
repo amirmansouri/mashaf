@@ -7,7 +7,6 @@ import { getSurah, Surah, Ayah } from "@/lib/quranData";
 import { useQuranStore } from "@/stores/quranStore";
 import { useBookmarkStore } from "@/stores/bookmarkStore";
 import { useSettingsStore } from "@/stores/settingsStore";
-import { useStatsStore } from "@/stores/statsStore";
 import { useAnnotationStore, Annotation } from "@/stores/annotationStore";
 
 export default function SurahPage() {
@@ -19,10 +18,13 @@ export default function SurahPage() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const setLastRead = useQuranStore((s) => s.setLastRead);
-  const { isBookmarked, addBookmark, removeBookmark, bookmarks } = useBookmarkStore();
+  const bookmarks = useBookmarkStore((s) => s.bookmarks);
+  const addBookmark = useBookmarkStore((s) => s.addBookmark);
+  const removeBookmark = useBookmarkStore((s) => s.removeBookmark);
+  const isBookmarked = useBookmarkStore((s) => s.isBookmarked);
   const fontSize = useSettingsStore((s) => s.fontSize);
-  const logReading = useStatsStore((s) => s.logReading);
-  const { getAnnotation, setAnnotation } = useAnnotationStore();
+  const getAnnotation = useAnnotationStore((s) => s.getAnnotation);
+  const setAnnotation = useAnnotationStore((s) => s.setAnnotation);
 
   useEffect(() => {
     getSurah(surahNumber).then((s) => {
@@ -34,9 +36,9 @@ export default function SurahPage() {
   useEffect(() => {
     if (surah) {
       setLastRead(surah.number, 1);
-      logReading(0, 0, 1);
     }
-  }, [surah, setLastRead, logReading]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [surah]);
 
   const handleAyahClick = (ayah: Ayah) => {
     setActiveAyah(activeAyah === ayah.numberInSurah ? null : ayah.numberInSurah);

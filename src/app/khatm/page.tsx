@@ -64,7 +64,7 @@ export default function KhatmPage() {
               </div>
               <ProgressBar progress={progress} showLabel />
               <p className="text-xs text-[var(--muted)] mt-2 text-center">
-                {totalCompleted}/٣٠ جزء مكتمل
+                {totalCompleted}/30 جزء مكتمل
               </p>
               <div className="flex gap-2 mt-3">
                 <Button variant="secondary" size="sm" fullWidth onClick={() => deleteGroup(group.id)}>

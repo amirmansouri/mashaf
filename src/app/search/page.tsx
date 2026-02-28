@@ -71,7 +71,7 @@ export default function SearchPage() {
 
         {results.length > 0 && (
           <p className="text-center text-xs text-[var(--muted)] py-4">
-            {results.length} نتيجة {results.length >= 50 ? "(أول ٥٠)" : ""}
+            {results.length} نتيجة {results.length >= 50 ? "(أول 50)" : ""}
           </p>
         )}
       </div>

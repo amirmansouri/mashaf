@@ -49,7 +49,7 @@ export default function HifzPage() {
           <p className="font-bold mb-3">التقدم الكلي</p>
           <ProgressBar progress={(memorizedCount / 604) * 100} showLabel />
           <p className="text-xs text-[var(--muted)] mt-2 text-center">
-            {memorizedCount} من ٦٠٤ صفحة
+            {memorizedCount} من 604 صفحة
           </p>
         </Card>
 

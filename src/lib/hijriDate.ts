@@ -13,17 +13,49 @@ const hijriMonths = [
 ];
 
 export function toHijri(date: Date = new Date()): HijriDate {
-  // Use Intl.DateTimeFormat for Hijri calendar
-  const formatter = new Intl.DateTimeFormat("ar-SA-u-ca-islamic-umalqura", {
-    day: "numeric",
-    month: "numeric",
-    year: "numeric",
-  });
+  try {
+    // Use Intl.DateTimeFormat with English numerals
+    const formatter = new Intl.DateTimeFormat("en-u-ca-islamic-umalqura", {
+      day: "numeric",
+      month: "numeric",
+      year: "numeric",
+    });
 
-  const parts = formatter.formatToParts(date);
-  const day = parseInt(parts.find((p) => p.type === "day")?.value || "1");
-  const month = parseInt(parts.find((p) => p.type === "month")?.value || "1");
-  const year = parseInt(parts.find((p) => p.type === "year")?.value || "1446");
+    const parts = formatter.formatToParts(date);
+    const dayStr = parts.find((p) => p.type === "day")?.value || "";
+    const monthStr = parts.find((p) => p.type === "month")?.value || "";
+    const yearStr = parts.find((p) => p.type === "year")?.value || "";
+
+    const day = parseInt(dayStr, 10);
+    const month = parseInt(monthStr, 10);
+    const year = parseInt(yearStr, 10);
+
+    if (isNaN(day) || isNaN(month) || isNaN(year)) {
+      return fallbackHijri(date);
+    }
+
+    return {
+      day,
+      month,
+      year,
+      monthName: hijriMonths[month - 1] || "",
+    };
+  } catch {
+    return fallbackHijri(date);
+  }
+}
+
+// Fallback calculation if Intl is not available
+function fallbackHijri(date: Date): HijriDate {
+  const g = date.getTime() / 86400000 + 2440587.5;
+  const z = Math.floor(g - 1948439.5) + 1;
+  const a = Math.floor((z - 1) / 10631);
+  const b = (z - 1) - 10631 * a;
+  const c = Math.floor((b - 1) / 354.36667);
+  const d = b - Math.floor(c * 354.36667);
+  const month = Math.min(12, Math.ceil((d - 0.5) / 29.5));
+  const day = Math.max(1, d - Math.floor(29.5001 * (month - 1)));
+  const year = 30 * a + c + 1;
 
   return {
     day,

@@ -75,7 +75,7 @@ export default function SettingsPage() {
         {/* App Info */}
         <div className="text-center py-4">
           <p className="text-xl font-bold">مصحف</p>
-          <p className="text-xs text-[var(--muted)] mt-1">الإصدار ١.٠.٠</p>
+          <p className="text-xs text-[var(--muted)] mt-1">الإصدار 1.0.0</p>
           <p className="text-xs text-[var(--muted)] mt-1">القرآن الكريم - التراويح - الأذكار</p>
         </div>
       </div>
