@@ -47,6 +47,18 @@ export async function getJuzAyahs(juz: number): Promise<{ surah: Surah; ayahs: A
   return result;
 }
 
+export async function getPageAyahs(page: number): Promise<{ surah: Surah; ayahs: Ayah[] }[]> {
+  const data = await loadQuranData();
+  const result: { surah: Surah; ayahs: Ayah[] }[] = [];
+  for (const surah of data.surahs) {
+    const pageAyahs = surah.ayahs.filter((a) => a.page === page);
+    if (pageAyahs.length > 0) {
+      result.push({ surah, ayahs: pageAyahs });
+    }
+  }
+  return result;
+}
+
 export async function getHizbAyahs(hizb: number): Promise<{ surah: Surah; ayahs: Ayah[] }[]> {
   const data = await loadQuranData();
   const result: { surah: Surah; ayahs: Ayah[] }[] = [];

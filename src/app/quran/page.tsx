@@ -104,9 +104,21 @@ export default function QuranPage() {
       {/* Page List */}
       {viewMode === "page" && (
         <div className="px-4 pb-6">
-          <p className="text-center text-[var(--muted)] py-8 text-sm">
-            عرض الصفحات قريباً إن شاء الله
-          </p>
+          <Link href="/quran/livre">
+            <div className="card mb-4 text-center bg-gradient-to-br from-primary-600/20 to-primary-800/10 border-primary-500/30">
+              <p className="text-lg font-bold text-primary-500">وضع المصحف</p>
+              <p className="text-xs text-[var(--muted)] mt-1">قراءة صفحة بصفحة بشاشة كاملة</p>
+            </div>
+          </Link>
+          <div className="grid grid-cols-6 gap-1.5">
+            {Array.from({ length: 604 }, (_, i) => i + 1).map((page) => (
+              <Link key={page} href={`/quran/livre?page=${page}`}>
+                <div className="card text-center py-2 px-0 hover:border-[var(--accent)] transition-colors">
+                  <p className="text-sm font-bold text-[var(--accent)]">{page}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       )}
     </div>
